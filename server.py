@@ -2,11 +2,18 @@
 import controller as ctrl
 
 
+
 # Fazer TESTE DE QUEUE
 # colocar um time sleep no código do servidor e verificar como se comporta quando mais de um client tenta se comunicar.
 # mudar o numero da queue nos testes para ver como se comporta.
 
 ### SERVER CODE ###
+
+# Erro de "too many requests" acontece na AUTENTICAÇÃO
+# Solução: fazer uma autenticação por hora do cob.write e do cob.read
+# Guardar em um file o token e o horário da última renovação
+# Quando faltar menos de 5 minutos para acabar a validade do token, renova ambos o cob.write e o cob.read
+
 
 
 
@@ -115,6 +122,16 @@ def daily_update():
             time.sleep(60)
 
 
+def token_auto_update():
+    while True:
+
+        ctrl.update_auth_token()
+
+        # Update once every 30 minutes (token should expire in 60 minutes, so we update it earlier)
+        time.sleep(1800)
+
+
+
 # Function to update CSV file (placeholder)
 def update_csv():
     # Placeholder for actual implementation
@@ -143,6 +160,9 @@ def main():
     # Start a thread for daily updates
     update_thread = threading.Thread(target=daily_update)
     update_thread.start()
+
+    token_update_thread = threading.Thread(target=token_auto_update)
+    token_update_thread.start()
 
     # Handle incoming connections
     while True:

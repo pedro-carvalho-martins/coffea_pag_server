@@ -1,6 +1,6 @@
 
 import requests_API_Inter as reqAPI
-
+import rw_tokens
 
 
 # Function to retrieve the location of the certificates
@@ -31,12 +31,25 @@ def get_token(request_scope):
     return token
 
 
+def update_auth_token():
+
+    token_cob_write = get_token('cob.write')
+    token_cob_read = get_token('cob.read')
+
+    # Write tokens to file
+    rw_tokens.write_token_file('cob.write', token_cob_write, 'cob.read', token_cob_read)
+
+    return
+
+
+
 def create_pix(price):
 
     #### ADD ERROR TREATMENT CODE HERE ?? #### DO NOT RETURN EVERYTHING AS USUAL IF QR CODE GENERATION FAILS
 
     certificate_file, private_key_file = get_certificates()
-    token_cob_write = get_token('cob.write')
+    #token_cob_write = get_token('cob.write')
+    token_cob_write = rw_tokens.read_token_file()['cob.write']
 
     chave_pix = "10960792000108"
 
@@ -54,7 +67,8 @@ def create_pix(price):
 def verify_status_pix(txid):
 
     certificate_file, private_key_file = get_certificates()
-    token_cob_read = get_token('cob.read')
+    #token_cob_read = get_token('cob.read')
+    token_cob_read = rw_tokens.read_token_file()['cob.read']
 
     response_status_cob_pix = reqAPI.request_status_cobranca(token_cob_read, txid, certificate_file, private_key_file)
 
