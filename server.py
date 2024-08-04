@@ -92,6 +92,8 @@ def handle_client(conn, addr):
                 response = handle_auth_rpi(param1, param2)
             elif request_type == "telemetry_get":
                 response = handle_telemetry_get(param1, param2)
+            elif request_type == "ping":
+                response = {"ping": "OK"}
             else:
                 response = {"error": "Invalid request type"}
 
