@@ -17,7 +17,6 @@ import controller as ctrl
 
 
 
-######### SAMPLE CODE FROM CHATGPT ##########
 # SERVER SIDE #
 
 import socket
@@ -37,6 +36,8 @@ def handle_create_pix(rpi_key, price):
 
     pix_qrcode_copiaecola, pix_txid = ctrl.create_pix(price)
 
+    print("handle_create_pix "+rpi_key+" "+str(price))
+
     response = {"pix_qrcode_copiaecola": pix_qrcode_copiaecola,
                 "pix_txid": pix_txid}
 
@@ -48,6 +49,8 @@ def handle_verify_status_pix(rpi_key, txid):
     # Placeholder for actual implementation
 
     status_cob_pix = ctrl.verify_status_pix(txid)
+
+    print("handle_verify_status_pix " + rpi_key + " " + txid)
 
     response = {"status_cob_pix": status_cob_pix}
 
@@ -64,6 +67,13 @@ def handle_auth_rpi(param1, param2):
 def handle_telemetry_get(param1, param2):
     # Placeholder for actual implementation
     pass
+
+def handle_ping(rpi_key, param2):
+    print("handle_ping " + rpi_key)
+
+    response = {"ping": "OK"}
+
+    return response
 
 
 # Function to handle client requests
@@ -93,7 +103,7 @@ def handle_client(conn, addr):
             elif request_type == "telemetry_get":
                 response = handle_telemetry_get(param1, param2)
             elif request_type == "ping":
-                response = {"ping": "OK"}
+                response = handle_ping(param1, param2)
             else:
                 response = {"error": "Invalid request type"}
 

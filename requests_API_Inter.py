@@ -120,10 +120,6 @@ def request_status_cobranca(token_cob_read, txid, certificate_file, private_key_
 
 
 
-############### OLD CODE ####################
-
-
-
 
 
 
