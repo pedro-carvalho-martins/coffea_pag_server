@@ -161,8 +161,8 @@ def main():
     # Create a socket object
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Bind the socket to AWS elastic IP and port 8080
-    server_socket.bind(('18.230.15.249', 8080))
+    # Make the server accessible from anywhere and bind to port 8080
+    server_socket.bind(('0.0.0.0', 8080))
 
     # Set the maximum number of queued connections
     server_socket.listen(5)
